@@ -26,10 +26,10 @@ const showDepartments = () => {
 };
 
 const showRoles = () => {
-  const sql = 'SELECT role.id, role.title, role.salary, departments.name AS departments;';
-  FROM role
+  const sql = 'SELECT roles.id, roles.title, roles.salary, departments.name AS departments;';
+  FROM roles
   JOIN departments
-  ON role.department_id = department_id;';
+  ON roles.department_id = department_id;';
 db.query(sql, (err, res ) => {
   if (err){
     res.status(400).json({ error: err.message});
@@ -41,7 +41,7 @@ db.query(sql, (err, res ) => {
 });
 
 const showEmployees  = () => {
-  const sql = 'SELECT employee.id, employee.first_name. employee.last_name, role.title AS title, departments.name AS department, role.salary AS salary, CONCAT(m.first_name, ' ', m.last_name) AS manager FROM employee LEFT JOIN employee m ON m.id = employee.manager_id LEFT JOIN departments ON role.department_id = department.id;';
+  const sql = 'SELECT employees.id, employees.first_name. employees.last_name, roles.title AS title, departments.name AS department, roles.salary AS salary, CONCAT(m.first_name, ' ', m.last_name) AS manager FROM employee LEFT JOIN employees m ON m.id = employees.manager_id LEFT JOIN departments ON role.department_id = departments.id;';
 
 db.query(sql, (err, res) => {
   if(err) {
@@ -57,8 +57,8 @@ const addEmployee = async () => {
   try {
     const roles = await db
     .promise()
-    .query('SELECT role.id, role.title FROM role');
-    const managers = await db.promise().query('SELECT employee.id, employee.first_name, employee.last_name FROM employee'
+    .query('SELECT roles.id, roles.title FROM roles');
+    const managers = await db.promise().query('SELECT employees.id, employees.first_name, employees.last_name FROM employees'
     );
     let newManager = managers[0].map((manager) => {
       return {
@@ -85,8 +85,8 @@ const addEmployee = async () => {
         message: `What is the employees' role?`, 
         choices: roles[0].map((role) => {
           return{
-            name: role.title,
-            value: role.id,
+            name: roles.title,
+            value: roles.id,
           };
         }),
       },
@@ -155,10 +155,10 @@ const addRole = async () => {
         type: `list`,
         name: `department_id`,
         message: `What department is it in?`,
-        choices: department[0].map((department) => {
+        choices: departments[0].map((departments) => {
           return {
-            name: department.name,
-            value: department.id,
+            name: departments.name,
+            value: departments.id,
           };
         }),
       },
@@ -185,17 +185,17 @@ const updateRole = async() => {
   try {
     const roles = await db
     .promise()
-    .query(`SELECT role.id, role.title FROM role`);
-  const employees = await db.promise().query(`SELECT employee.id, employee.first_name, employee.last_name FROM employee`);
+    .query(`SELECT roles.id, roles.title FROM roles`);
+  const employees = await db.promise().query(`SELECT employees.id, employees.first_name, employees.last_name FROM employees`);
   const updatedEmployeeRole = await inquirer.prompt([
     {
       type: `list`,
       name: `id`,
       message: `Which employees' role do you wish to update?`,
-      choices: employees[0].map((employee) => {
+      choices: employees[0].map((employees) => {
         return {
-          name: employee.first_name + ' ' + employee.last_name,
-          value: employee.id,
+          name: employees.first_name + ' ' + employees.last_name,
+          value: employees.id,
         };
       }),
     },
@@ -203,10 +203,10 @@ const updateRole = async() => {
       type: `list`,
       name: `role_id`,
       message: `What new role does the employee have?`,
-      choices: roles[0].map((role) => {
+      choices: roles[0].map((roles) => {
         return {
-          name: role.title,
-          value: role.id,
+          name: roles.title,
+          value: roles.id,
         };
       }),
     },
@@ -235,7 +235,7 @@ const insertUpdatedRole = (updatedEmployeeRole) => {
 
 const updateManager = async() => {
   try {
-    const employees = await db.promise().query(`SELECT * FROM employee`);
+    const employees = await db.promise().query(`SELECT * FROM employees`);
     let newManager = employees[0].map((manager) => {
       return {
         name: manager.first_name + ' ' + manager.last_name,
@@ -248,10 +248,10 @@ const updateManager = async() => {
         type: `list`,
         name: 'id',
         message: `Which employees' manager do you wish to update?`,
-        choices: employees[0].map((employee) => {
+        choices: employees[0].map((employees) => {
           return{
-            name: employee[0]. first_name + ' ' + employee.last_name,
-            value: employee.id,
+            name: employees[0]. first_name + ' ' + employees.last_name,
+            value: employees.id,
           };
         }),
       },
