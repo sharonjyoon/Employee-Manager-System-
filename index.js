@@ -361,3 +361,5 @@ const mainMenu = () => {
     }
   });
 };
+
+mainMenu();
