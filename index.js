@@ -1,7 +1,7 @@
 const mysql = require('mysql2');
 const inquirer = require("inquirer");
 // const cTable = require('console.table');
-const db = mysql.createConnection('mysql://root:rootroot@localhost:3306/employeeManager_db')
+const db = mysql.createConnection('mysql://root:rootroot@localhost:3306/employeemanager_db')
 
 
 const addDepartment = () => {
