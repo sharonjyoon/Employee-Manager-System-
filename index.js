@@ -1,8 +1,14 @@
 const mysql = require('mysql2');
 const inquirer = require("inquirer");
 // const cTable = require('console.table');
-const db = mysql.createConnection('mysql://root:rootroot@localhost:3306/employeemanager_db')
-
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'KirbysDreamLand0318!',
+  database: 'employeemanager_db',
+},
+console.log(`Connected to the employeemanager_db database.`)
+);
 
 const addDepartment = () => {
   inquirer.prompt([
@@ -138,7 +144,7 @@ const updateRole = () => {
   })
   }
 
-const showDepartment = () => {
+const showDepartments = () => {
   db.query('Select * FROM departments', (err, departments)=> {
     if(err){
       console.log(err)
@@ -182,6 +188,7 @@ const mainMenu = () => {
         "Add Employee",
         "Add Department",
         "Add Role",
+        "Update Role",
         "Quit",
     ]
    }
@@ -197,7 +204,7 @@ const mainMenu = () => {
       showRoles();
     }
 
-    if(choices === "View all employees") {
+    if(choices === "View all Employees") {
       showEmployees();
     }
 
@@ -211,6 +218,10 @@ const mainMenu = () => {
 
     if(choices === "Add Employee") {
       addEmployee();
+    }
+
+    if(choices === "Update Role") {
+      updateRole();
     }
 
     if(choices === "Quit") {
