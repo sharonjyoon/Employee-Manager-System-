@@ -1,7 +1,7 @@
 const mysql = require('mysql2');
 const inquirer = require("inquirer");
-const cTable = require('console.table');
-const db = mysql.createConnection('mysql://root:rootroot@localhost:3306/EmployeeManager_db')
+// const cTable = require('console.table');
+const db = mysql.createConnection('mysql://root:rootroot@localhost:3306/employeeManager_db')
 
 
 const addDepartment = () => {
@@ -182,7 +182,6 @@ const mainMenu = () => {
         "Add Employee",
         "Add Department",
         "Add Role",
-        "Update Employee Manager",
         "Quit",
     ]
    }
@@ -212,10 +211,6 @@ const mainMenu = () => {
 
     if(choices === "Add Employee") {
       addEmployee();
-    }
-
-    if(choices === "Update an employee manager") {
-      updateManager();
     }
 
     if(choices === "Quit") {
