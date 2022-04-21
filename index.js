@@ -4,7 +4,7 @@ const inquirer = require("inquirer");
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'KirbysDreamLand0318!',
+  password: 'rootroot',
   database: 'employeemanager_db',
 },
 console.log(`Connected to the employeemanager_db database.`)
@@ -78,21 +78,20 @@ const addEmployee = () => {
       message: "Is the employee a manager?",
       type: 'list',
       choices: ["yes", "no"],
-      name: 'managerBoolean'
+      name: 'managerAnswer'
 
     }
   ])
     .then(employee => {
-      if(employee.managerBoolean === 'yes') {
-        delete employee.managerBoolean 
+      if(employee.managerAnswer === 'yes') {
+        delete employee.managerAnswer 
         db.query("INSERT INTO employees SET ?", employee, err => {
           if (err) {
-            console.log(err)
-          }
+            console.log(err)}
+        })
         console.log("New employee successfully added");
-        mainMenu();
-      })
-         if(employee.managerBoolean === 'no') {
+        mainMenu()
+      }else if(employee.managerAnswer === 'no') {
         inquirer.prompt([
           {
           message: 'What is the id of the manager of the employee?',
@@ -101,24 +100,23 @@ const addEmployee = () => {
           }
       ])
         .then(junior => {
-          delete employee.managerBoolean
+          delete employee.managerAnswer
+          
           let newEmployee = {
             ...employee,
-            ...junior, 
+            ...junior 
           }
           db.query("INSERT INTO employees SET ?", newEmployee, err => {
             if (err) {
-              console.log(err)
-            }
-          console.log("New employee successfully added");
-          mainMenu();
+              console.log(err)}
+          })
+          console.log("New employee successfully added.");
+          mainMenu()
         })
-      })
+      }
       
-    };
-};
-});
-};
+    })
+}
 
 const updateRole = () => {
   inquirer.prompt([{
@@ -129,17 +127,17 @@ const updateRole = () => {
   {
     message: "What is the id of the role the employee should be updated to?",
     type: 'input',
-    name: "role_id"
+    name: 'role_id'
   }])
     .then(employee => {
       let newRole = {
         role_id: employee.role_id
       }
-      db.query(`UPDATE INTO employees SET ? WHERE id = ${employee.id}`, newRole, err => {
+      db.query(`UPDATE employees SET ? WHERE id = ${employee.id}`, newRole, err => {
       if(err) {
         console.log(err)}
       })
-    console.log('New employee successfully added');
+    console.log('Employee role successfully updated.');
     mainMenu();
   })
   }
