@@ -18,4 +18,4 @@ npm install mysql2
 npm install console.table --save
 
 
-
+Please type node index.js to start the connection to the database and begin the process of creating and editing items. 
